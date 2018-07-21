@@ -2,13 +2,33 @@ package com.heavenhr.interview.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+@Entity
 public class JobOffer {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(unique = true)
 	private String jobTitle;
-	private Date startDate;
-	private Integer numberOfApplications;
 	
-	public JobOffer() { }
+	@Temporal(TemporalType.DATE)
+	private Date startDate;
+	
+	@Transient
+	private Integer numberOfApplications;
+
+	public JobOffer() {
+	}
 
 	public Long getId() {
 		return id;
@@ -40,5 +60,5 @@ public class JobOffer {
 
 	public void setNumberOfApplications(Integer numberOfApplications) {
 		this.numberOfApplications = numberOfApplications;
-	} 
+	}
 }
