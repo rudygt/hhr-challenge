@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.heavenhr.interview.model.JobOffer;
 import com.heavenhr.interview.repository.JobOfferRepository;
+import com.heavenhr.interview.service.JobOfferService;
 
 @RestController
 @RequestMapping("api/v1/")
@@ -19,10 +20,13 @@ public class JobOfferController {
 
 	@Autowired
 	private JobOfferRepository jobOfferRepository;
+	
+	@Autowired
+	private JobOfferService jobOfferService;
 
 	@RequestMapping(value = "joboffers", method = RequestMethod.GET)
 	public List<JobOffer> list() {
-		return jobOfferRepository.findAll();
+		return jobOfferService.getAll();
 	}
 
 	@RequestMapping(value = "joboffers", method = RequestMethod.POST)
@@ -32,7 +36,7 @@ public class JobOfferController {
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.GET)
 	public JobOffer get(@PathVariable Long id) {
-		return jobOfferRepository.findById(id).orElse(null);
+		return jobOfferService.getJobOfferById(id);
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.PUT)
