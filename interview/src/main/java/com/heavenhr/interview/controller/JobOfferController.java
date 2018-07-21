@@ -51,10 +51,10 @@ public class JobOfferController {
 	public JobOffer delete(@PathVariable Long id) {
 		JobOffer current = jobOfferRepository.findById(id).orElse(null);
 
-		if (current != null) {			
+		if (current != null) {
 			jobOfferRepository.delete(current);
 		}
-		
+
 		return current;
 	}
 }
