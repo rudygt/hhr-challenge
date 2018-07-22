@@ -92,14 +92,14 @@ public class JobOfferControllerIntegrationTest {
 		
 		offer.setJobTitle("TEST UPDATE");
 		
-		JobOfferDTO before = jobOfferController.get(1L);
+		JobOfferDTO before = jobOfferController.get(3L);
 		
-		JobOfferDTO after = jobOfferController.update(1L, offer);
+		JobOfferDTO after = jobOfferController.update(3L, offer);
 		
-		assertThat(before.getId(), is(1L));
-		assertThat(before.getJobTitle(), is("Senior BE Developer"));
+		assertThat(before.getId(), is(3L));
+		assertThat(before.getJobTitle(), is("Senior QA Developer"));
 		
-		assertThat(after.getId(), is(1L));
+		assertThat(after.getId(), is(3L));
 		assertThat(after.getJobTitle(), is("TEST UPDATE"));
 	}
 	
