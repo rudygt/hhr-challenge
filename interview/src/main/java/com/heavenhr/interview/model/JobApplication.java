@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.envers.Audited;
+
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(name = "candidate_apply_to_offer_unique", columnNames = { "JOB_OFFER_ID",
 		"CANDIDATE_EMAIL" }))
@@ -30,7 +32,8 @@ public class JobApplication {
 
 	@Column(columnDefinition = "VARCHAR")
 	private String resumeText;
-
+	
+	@Audited
 	private ApplicationStatus status;	
 	
 	public Long getId() {
