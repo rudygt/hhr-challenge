@@ -20,10 +20,10 @@ public class JobOffer {
 
 	@Column(unique = true)
 	private String jobTitle;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date startDate;
-	
+
 	@Transient
 	private Integer numberOfApplications;
 
