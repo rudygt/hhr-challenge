@@ -42,7 +42,7 @@
 - [Initial Data Script](interview/src/main/resources/import.sql) need to re run mvn package if changed.
 - [Custom Hibernate Interceptor](interview/src/main/java/com/heavenhr/interview/model/JobApplicationListener.java) Used to capture changes to the job application status entity and broadcast them to the ApplicationStatusService 
 - [Job Application Status Service](interview/src/main/java/com/heavenhr/interview/service/ApplicationStatusServiceImpl.java) Used to handle the status changes and execute the appropiate action depending on the new application status value. 
-- [Job Offer Service](interview/src/main/java/com/heavenhr/interview/service/JobOfferServiceImpl.java) Used manage JobOffer entities. 
+- [Job Offer Service](interview/src/main/java/com/heavenhr/interview/service/JobOfferServiceImpl.java) Used to manage JobOffer entities. 
 - [Job Application Service](interview/src/main/java/com/heavenhr/interview/service/JobApplicationServiceImpl.java) used to manage JobApplication entities. 
 - [Custom Exceptions](interview/src/main/java/com/heavenhr/interview/exception/) Exceptions mapped to the proper http status codes. 
 - [Data Transfer Objects](interview/src/main/java/com/heavenhr/interview/dto) dtos. 
