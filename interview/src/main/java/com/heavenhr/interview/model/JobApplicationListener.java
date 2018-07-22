@@ -23,9 +23,7 @@ public class JobApplicationListener extends EmptyInterceptor {
 				if (currentState[i] == null && previousState[i] == null) {
 					continue;
 				} else {
-					if (!currentState[i].equals(previousState[i])) {
-						/*System.out.println(propertyNames[i] + " was changed from " + previousState[i] + " to "
-								+ currentState[i] + " for " + id);*/
+					if (!currentState[i].equals(previousState[i])) {						
 						ApplicationStatusService service = BeanUtils.getBean(ApplicationStatusService.class);
 						
 						service.handleStatusChange((JobApplication)entity, (ApplicationStatus)previousState[i], (ApplicationStatus)currentState[i]);
