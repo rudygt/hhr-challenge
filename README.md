@@ -39,6 +39,7 @@
 - [Web Integration Tests](interview/src/test/java/com/heavenhr/interview/JobOfferControllerWebIntegrationTest.java)
 
 ## Relevant Items
+- [Initial Data Script](interview/src/main/resources/import.sql) need to re run mvn package if changed.
 - [Custom Hibernate Interceptor](interview/src/main/java/com/heavenhr/interview/model/JobApplicationListener.java) Used to capture changes to the job application status entity and broadcast them to the ApplicationStatusService 
 - [Job Application Status Service](interview/src/main/java/com/heavenhr/interview/service/ApplicationStatusServiceImpl.java) Used to handle the status changes and execute the appropiate action depending on the new application status value. 
 - [Job Offer Service](interview/src/main/java/com/heavenhr/interview/service/JobOfferServiceImpl.java) Used manage JobOffer entities. 
