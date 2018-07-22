@@ -30,6 +30,8 @@ public class JobApplication {
 	@Column(columnDefinition = "VARCHAR")
 	private String resumeText;
 
+	private ApplicationStatus status;
+	
 	public Long getId() {
 		return id;
 	}
@@ -60,6 +62,14 @@ public class JobApplication {
 
 	public void setResumeText(String resumeText) {
 		this.resumeText = resumeText;
+	}
+
+	public ApplicationStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ApplicationStatus status) {
+		this.status = status;
 	}
 
 }

@@ -1,12 +1,15 @@
 package com.heavenhr.interview.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -27,6 +30,9 @@ public class JobOffer {
 	@Transient
 	private Integer numberOfApplications;
 
+	@OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
+	private List<JobApplication> applications;
+	
 	public JobOffer() {
 	}
 
@@ -60,5 +66,13 @@ public class JobOffer {
 
 	public void setNumberOfApplications(Integer numberOfApplications) {
 		this.numberOfApplications = numberOfApplications;
+	}
+
+	public List<JobApplication> getApplications() {
+		return applications;
+	}
+
+	public void setApplications(List<JobApplication> applications) {
+		this.applications = applications;
 	}
 }

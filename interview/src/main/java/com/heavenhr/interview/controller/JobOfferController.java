@@ -1,7 +1,9 @@
 package com.heavenhr.interview.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.heavenhr.interview.dto.CreateJobOffer;
+import com.heavenhr.interview.dto.JobOfferDTO;
 import com.heavenhr.interview.dto.UpdateJobOffer;
 import com.heavenhr.interview.model.JobOffer;
 import com.heavenhr.interview.service.JobOfferService;
@@ -22,24 +25,32 @@ public class JobOfferController {
 	@Autowired
 	private JobOfferService jobOfferService;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
+	private JobOfferDTO convertToDto(JobOffer offer) {
+		JobOfferDTO dto = modelMapper.map(offer, JobOfferDTO.class);
+		return dto;
+	}
+
 	@RequestMapping(value = "joboffers", method = RequestMethod.GET)
-	public List<JobOffer> list() {
-		return jobOfferService.getAll();
+	public List<JobOfferDTO> list() {
+		return jobOfferService.getAll().stream().map(item -> convertToDto(item)).collect(Collectors.toList());
 	}
 
 	@RequestMapping(value = "joboffers", method = RequestMethod.POST)
-	public JobOffer create(@RequestBody CreateJobOffer jobOffer) {
-		return jobOfferService.createJobOffer(jobOffer);
+	public JobOfferDTO create(@RequestBody CreateJobOffer jobOffer) {
+		return  convertToDto(jobOfferService.createJobOffer(jobOffer));
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.GET)
-	public JobOffer get(@PathVariable Long id) {
-		return jobOfferService.getJobOfferById(id);
+	public JobOfferDTO get(@PathVariable Long id) {
+		return convertToDto(jobOfferService.getJobOfferById(id));
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.PUT)
-	public JobOffer update(@PathVariable Long id, @RequestBody UpdateJobOffer jobOffer) {
-		return jobOfferService.updateJobOffer(id, jobOffer);
+	public JobOfferDTO update(@PathVariable Long id, @RequestBody UpdateJobOffer jobOffer) {
+		return convertToDto(jobOfferService.updateJobOffer(id, jobOffer));
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.DELETE)
