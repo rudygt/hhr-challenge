@@ -2,25 +2,23 @@ package com.heavenhr.interview.controller;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.heavenhr.interview.dto.CreateJobOffer;
+import com.heavenhr.interview.dto.UpdateJobOffer;
 import com.heavenhr.interview.model.JobOffer;
-import com.heavenhr.interview.repository.JobOfferRepository;
 import com.heavenhr.interview.service.JobOfferService;
 
 @RestController
 @RequestMapping("api/v1/")
 public class JobOfferController {
 
-	@Autowired
-	private JobOfferRepository jobOfferRepository;
-	
 	@Autowired
 	private JobOfferService jobOfferService;
 
@@ -30,8 +28,8 @@ public class JobOfferController {
 	}
 
 	@RequestMapping(value = "joboffers", method = RequestMethod.POST)
-	public JobOffer create(@RequestBody JobOffer jobOffer) {
-		return jobOfferRepository.saveAndFlush(jobOffer);
+	public JobOffer create(@RequestBody CreateJobOffer jobOffer) {
+		return jobOfferService.createJobOffer(jobOffer);
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.GET)
@@ -40,25 +38,13 @@ public class JobOfferController {
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.PUT)
-	public JobOffer update(@PathVariable Long id, @RequestBody JobOffer jobOffer) {
-		JobOffer current = jobOfferRepository.findById(id).orElse(null);
-
-		if (current != null) {
-			BeanUtils.copyProperties(jobOffer, current);
-			jobOfferRepository.saveAndFlush(current);
-		}
-
-		return null;
+	public JobOffer update(@PathVariable Long id, @RequestBody UpdateJobOffer jobOffer) {
+		return jobOfferService.updateJobOffer(id, jobOffer);
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.DELETE)
-	public JobOffer delete(@PathVariable Long id) {
-		JobOffer current = jobOfferRepository.findById(id).orElse(null);
-
-		if (current != null) {
-			jobOfferRepository.delete(current);
-		}
-
-		return current;
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		jobOfferService.deleteJobOffer(id);
+		return ResponseEntity.ok().build();
 	}
 }
