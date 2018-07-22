@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.heavenhr.interview.dto.CreateJobOffer;
+import com.heavenhr.interview.dto.JobApplicationDTO;
 import com.heavenhr.interview.dto.JobOfferDTO;
 import com.heavenhr.interview.dto.UpdateJobOffer;
+import com.heavenhr.interview.model.JobApplication;
 import com.heavenhr.interview.model.JobOffer;
 import com.heavenhr.interview.service.JobOfferService;
 
@@ -28,11 +30,6 @@ public class JobOfferController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private JobOfferDTO convertToDto(JobOffer offer) {
-		JobOfferDTO dto = modelMapper.map(offer, JobOfferDTO.class);
-		return dto;
-	}
-
 	@RequestMapping(value = "joboffers", method = RequestMethod.GET)
 	public List<JobOfferDTO> list() {
 		return jobOfferService.getAll().stream().map(item -> convertToDto(item)).collect(Collectors.toList());
@@ -40,7 +37,7 @@ public class JobOfferController {
 
 	@RequestMapping(value = "joboffers", method = RequestMethod.POST)
 	public JobOfferDTO create(@RequestBody CreateJobOffer jobOffer) {
-		return  convertToDto(jobOfferService.createJobOffer(jobOffer));
+		return convertToDto(jobOfferService.createJobOffer(jobOffer));
 	}
 
 	@RequestMapping(value = "joboffers/{id}", method = RequestMethod.GET)
@@ -57,5 +54,22 @@ public class JobOfferController {
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		jobOfferService.deleteJobOffer(id);
 		return ResponseEntity.ok().build();
+	}
+
+	@RequestMapping(value = "joboffers/{id}/applications", method = RequestMethod.GET)
+	public List<JobApplicationDTO> listApplications(@PathVariable Long id) {
+		JobOffer offer = jobOfferService.getJobOfferById(id);
+
+		return offer.getApplications().stream().map(item -> convertToDto(item)).collect(Collectors.toList());
+	}
+
+	private JobApplicationDTO convertToDto(JobApplication application) {
+		JobApplicationDTO dto = modelMapper.map(application, JobApplicationDTO.class);
+		return dto;
+	}
+
+	private JobOfferDTO convertToDto(JobOffer offer) {
+		JobOfferDTO dto = modelMapper.map(offer, JobOfferDTO.class);
+		return dto;
 	}
 }

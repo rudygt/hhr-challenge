@@ -14,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
 public class JobOffer {
 
@@ -27,7 +29,8 @@ public class JobOffer {
 	@Temporal(TemporalType.DATE)
 	private Date startDate;
 
-	@Transient
+	//@Transient
+	@Formula("(select count(*) from JOB_APPLICATION a where a.JOB_OFFER_ID = id)")
 	private Integer numberOfApplications;
 
 	@OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
