@@ -3,6 +3,7 @@ package com.heavenhr.interview.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,13 +30,13 @@ public class JobOffer {
 	@Temporal(TemporalType.DATE)
 	private Date startDate;
 
-	//@Transient
+	// @Transient
 	@Formula("(select count(*) from JOB_APPLICATION a where a.JOB_OFFER_ID = id)")
 	private Integer numberOfApplications;
 
-	@OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<JobApplication> applications;
-	
+
 	public JobOffer() {
 	}
 

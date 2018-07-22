@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.heavenhr.interview.dto.ApplyToJobOffer;
 import com.heavenhr.interview.dto.CreateJobOffer;
 import com.heavenhr.interview.dto.UpdateJobOffer;
+import com.heavenhr.interview.exception.DuplicateJobApplicationException;
 import com.heavenhr.interview.exception.DuplicateJobOfferException;
 import com.heavenhr.interview.exception.EntityNotFoundException;
+import com.heavenhr.interview.model.ApplicationStatus;
+import com.heavenhr.interview.model.JobApplication;
 import com.heavenhr.interview.model.JobOffer;
 import com.heavenhr.interview.repository.JobOfferRepository;
 
@@ -19,7 +23,7 @@ public class JobOfferServiceImpl implements JobOfferService {
 
 	@Autowired
 	private JobOfferRepository jobOfferRepository;
-
+	
 	@Override
 	public List<JobOffer> getAll() {
 		return jobOfferRepository.findAll();
@@ -63,6 +67,29 @@ public class JobOfferServiceImpl implements JobOfferService {
 		JobOffer current = jobOfferRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
 		jobOfferRepository.delete(current);
+	}
+
+	@Override
+	public JobApplication applyToJobOffer(Long jobOfferId, ApplyToJobOffer command) {
+		JobOffer current = jobOfferRepository.findById(jobOfferId).orElseThrow(() -> new EntityNotFoundException());
+		
+		JobApplication application = new JobApplication();
+		
+		BeanUtils.copyProperties(command, application);
+				
+		application.setStatus(ApplicationStatus.APPLIED);
+		
+		current.getApplications().add(application);
+		
+		application.setJobOffer(current);
+		
+		try {			
+			current = jobOfferRepository.saveAndFlush(current);
+		} catch (DataIntegrityViolationException uniqueViolation) {
+			throw new DuplicateJobApplicationException();
+		}
+		
+		return application;
 	}
 
 }

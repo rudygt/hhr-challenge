@@ -2,8 +2,10 @@ package com.heavenhr.interview.service;
 
 import java.util.List;
 
+import com.heavenhr.interview.dto.ApplyToJobOffer;
 import com.heavenhr.interview.dto.CreateJobOffer;
 import com.heavenhr.interview.dto.UpdateJobOffer;
+import com.heavenhr.interview.model.JobApplication;
 import com.heavenhr.interview.model.JobOffer;
 
 public interface JobOfferService {	
@@ -18,4 +20,5 @@ public interface JobOfferService {
 	
 	void deleteJobOffer(Long id);
 		
+	JobApplication applyToJobOffer(Long jobOfferId, ApplyToJobOffer command);
 }
