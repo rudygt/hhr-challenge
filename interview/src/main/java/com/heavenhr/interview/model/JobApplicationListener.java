@@ -5,6 +5,9 @@ import java.io.Serializable;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 
+import com.heavenhr.interview.service.ApplicationStatusService;
+import com.heavenhr.interview.service.BeanUtils;
+
 public class JobApplicationListener extends EmptyInterceptor {
 
 	/**
@@ -21,8 +24,11 @@ public class JobApplicationListener extends EmptyInterceptor {
 					continue;
 				} else {
 					if (!currentState[i].equals(previousState[i])) {
-						System.out.println(propertyNames[i] + " was changed from " + previousState[i] + " to "
-								+ currentState[i] + " for " + id);
+						/*System.out.println(propertyNames[i] + " was changed from " + previousState[i] + " to "
+								+ currentState[i] + " for " + id);*/
+						ApplicationStatusService service = BeanUtils.getBean(ApplicationStatusService.class);
+						
+						service.handleStatusChange((JobApplication)entity, (ApplicationStatus)previousState[i], (ApplicationStatus)currentState[i]);
 					}
 				}
 
