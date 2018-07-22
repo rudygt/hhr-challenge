@@ -2,18 +2,21 @@ package com.heavenhr.interview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostPersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(name = "candidate_apply_to_offer_unique", columnNames = { "JOB_OFFER_ID",
 		"CANDIDATE_EMAIL" }))
+
 public class JobApplication {
 
 	@Id
@@ -31,6 +34,12 @@ public class JobApplication {
 	private String resumeText;
 
 	private ApplicationStatus status;
+	
+	@PostPersist
+	public void postPersist()
+	{
+		System.out.println("Application Updated " + this.getStatus());
+	}
 	
 	public Long getId() {
 		return id;
