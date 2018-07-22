@@ -20,7 +20,8 @@
 	* mvn package
 	* java -jar target/interview-0.0.1-SNAPSHOT.jar
 	
-## Usage (see the screenshots folder)
+## Usage 
+[Screenshots](screenshots/README.md) 
 
 1. H2 Console ( JDBC URL : "jdbc:h2:mem:hhrdb" ) 
 	* http://localhost:8080/h2db/
