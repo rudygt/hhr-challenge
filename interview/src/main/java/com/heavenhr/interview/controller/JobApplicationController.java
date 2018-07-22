@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.heavenhr.interview.dto.ApplyToJobOffer;
 import com.heavenhr.interview.dto.JobApplicationDTO;
-import com.heavenhr.interview.dto.JobOfferDTO;
 import com.heavenhr.interview.dto.UpdateJobApplication;
+import com.heavenhr.interview.model.ApplicationStatus;
 import com.heavenhr.interview.model.JobApplication;
 import com.heavenhr.interview.service.JobApplicationService;
 import com.heavenhr.interview.service.JobOfferService;
@@ -50,6 +50,11 @@ public class JobApplicationController {
 	@RequestMapping(value = "jobapplications/{id}", method = RequestMethod.POST)
 	public JobApplicationDTO update(@PathVariable Long id, @RequestBody UpdateJobApplication application) {
 		return convertToDto(jobApplicationService.updateJobApplication(id, application));
+	}
+	
+	@RequestMapping(value = "jobapplications/{id}/status", method = RequestMethod.POST)
+	public JobApplicationDTO update(@PathVariable Long id, @RequestBody ApplicationStatus status) {
+		return convertToDto(jobApplicationService.updateJobApplicationStatus(id, status));
 	}
 	
 	private JobApplicationDTO convertToDto(JobApplication application) {

@@ -2,11 +2,15 @@ package com.heavenhr.interview.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.heavenhr.interview.dto.UpdateJobApplication;
+import com.heavenhr.interview.exception.DuplicateJobApplicationException;
 import com.heavenhr.interview.exception.EntityNotFoundException;
+import com.heavenhr.interview.model.ApplicationStatus;
 import com.heavenhr.interview.model.JobApplication;
 import com.heavenhr.interview.repository.JobApplicationRepository;
 
@@ -18,8 +22,15 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
 	@Override
 	public JobApplication updateJobApplication(Long id, UpdateJobApplication command) {
-		// TODO Auto-generated method stub
-		return null;
+		JobApplication current = jobApplicationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
+		BeanUtils.copyProperties(command, current);
+
+		try {
+			return jobApplicationRepository.saveAndFlush(current);
+		} catch (DataIntegrityViolationException uniqueViolation) {
+			throw new DuplicateJobApplicationException();
+		}
 	}
 
 	@Override
@@ -37,6 +48,19 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 		JobApplication current = jobApplicationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
 		jobApplicationRepository.delete(current);
+	}
+
+	@Override
+	public JobApplication updateJobApplicationStatus(Long id, ApplicationStatus status) {
+		JobApplication current = jobApplicationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
+		current.setStatus(status);
+
+		try {
+			return jobApplicationRepository.saveAndFlush(current);
+		} catch (DataIntegrityViolationException uniqueViolation) {
+			throw new DuplicateJobApplicationException();
+		}
 	}
 
 }
